@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Wialon\AuthController@redirectWialon');
 
-Route::get('test', [WialonController::class, 'makeWialonApiRequest']);
+Route::get('dashboard', 'Wialon\DashboardController@index');
