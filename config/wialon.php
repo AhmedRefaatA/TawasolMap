@@ -1,0 +1,10 @@
+<?php
+
+return [
+    'base_url' => env('WIALON_BASE_URL', 'https://gps.tawasolmap.com'),
+
+    'redirect_url' => env('WIALON_REDIRECT_URL', 'http://localhost:8000'),
+    
+];
+
+?>
