@@ -1,5 +1,6 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import { InertiaProgress } from '@inertiajs/progress';
 
 createInertiaApp({
   resolve: name => {
@@ -12,3 +13,5 @@ createInertiaApp({
       .mount(el)
   },
 })
+
+InertiaProgress.init({ color: '#4B5563' }); // Set the desired progress bar color
