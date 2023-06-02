@@ -20,4 +20,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('items', 'Wialon\DashboardController@items');
     Route::get('tracking', 'Wialon\VehicleTrackingController@index');
+    Route::get('tracking/{id}', 'Wialon\VehicleTrackingController@tracking');
 });

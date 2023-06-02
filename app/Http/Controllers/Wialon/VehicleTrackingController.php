@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wialon;
 
+use App\Events\UpdateVehicleLocation;
 use App\Http\Controllers\Controller;
 use App\Services\WialonService;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class VehicleTrackingController extends Controller
             $data = WialonService::makeRequest('core/search_items', $params);
             $items = $data['items'];
             $itemIds = collect($items)->pluck('id')->toArray();
-            session('wialonItems', $itemIds);
+            cache([auth()->user()->id => $itemIds]);
             return Inertia::render('Vehicle/Index', [
                 'items' => $itemIds
             ]);
@@ -37,5 +38,18 @@ class VehicleTrackingController extends Controller
                 'error' => $e->getMessage()
              ]); 
         }
+    }
+
+    public function tracking(Request $request, $id){
+        $params = [
+            "itemId" => $id,//'82732',	//82711
+            "flags" => 1,
+            "lastTime" => $request->t,
+            "lastCount" => 1,
+            "flagsMask" => 0,
+            "loadCount" => 1
+        ];
+        $data = WialonService::makeRequest('messages/load_last', $params);
+        event(new UpdateVehicleLocation($id, $data));
     }
 }
