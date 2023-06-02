@@ -26,22 +26,22 @@ class DashboardController extends Controller
     }
 
     public function items(){
-        $params = [
-            "spec" => [
-				"itemsType" => 'avl_unit',	
-				"propName" => '',	
-				"propValueMask" => '',	
-				"sortType" => '',
-				"propType" => '',
-				"or_logic" => true	
-            ],
-            "force" => 1,			
-            "flags" => 1,			
-            "from" => 0,			
-            "to" => 0
-        ];
-        $data = WialonService::makeRequest('core/search_items', $params);
-        return response()->json($data);
+        // $params = [
+        //     "spec" => [
+		// 		"itemsType" => 'avl_unit',	
+		// 		"propName" => '',	
+		// 		"propValueMask" => '',	
+		// 		"sortType" => '',
+		// 		"propType" => '',
+		// 		"or_logic" => true	
+        //     ],
+        //     "force" => 1,			
+        //     "flags" => 1,			
+        //     "from" => 0,			
+        //     "to" => 0
+        // ];
+        // $data = WialonService::makeRequest('core/search_items', $params);
+        // return response()->json($data);
 /***************** */
         // $params = [
         //     "itemId" => '82732',	//82711
@@ -67,5 +67,19 @@ class DashboardController extends Controller
 // ];
 // $data = WialonService::makeRequest('core/get_user_info', $params);
 // return response()->json($data);
+
+// $params = [
+//             "spec" => [
+//                 [
+//                     "type" => 'id',	
+//                     "data" => '82732',	
+//                     "flags" => 2,	
+//                     "mod" => 1,
+//                     "max_items" => 2
+//                 ],
+//             ]
+//         ];
+//         $data = WialonService::makeRequest('core/update_data_flags', $params);
+//         return response()->json($data);
     }
 }
