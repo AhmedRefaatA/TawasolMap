@@ -14,31 +14,34 @@ class DashboardController extends Controller
     {
         $token = $request->token;
         if($token){
-            WialonService::login($token);
-            info(['wialonSid' => session('wialonSid')]);
-            return Inertia::render('Dashboard');
+            $login = WialonService::login($token);
+            if($login){
+                return Inertia::render('Dashboard');
+            }else{
+                return response()->json(WialonService::$error);
+            }
         }else{
             abort(401);
         }
     }
 
     public function items(){
-        // $params = [
-        //     "spec" => [
-		// 		"itemsType" => 'avl_unit',	
-		// 		"propName" => '',	
-		// 		"propValueMask" => '',	
-		// 		"sortType" => '',
-		// 		"propType" => '',
-		// 		"or_logic" => true	
-        //     ],
-        //     "force" => 1,			
-        //     "flags" => 1,			
-        //     "from" => 0,			
-        //     "to" => 0
-        // ];
-        // $data = WialonService::makeRequest('core/search_items', $params);
-        // return response()->json($data);
+        $params = [
+            "spec" => [
+				"itemsType" => 'avl_unit',	
+				"propName" => '',	
+				"propValueMask" => '',	
+				"sortType" => '',
+				"propType" => '',
+				"or_logic" => true	
+            ],
+            "force" => 1,			
+            "flags" => 1,			
+            "from" => 0,			
+            "to" => 0
+        ];
+        $data = WialonService::makeRequest('core/search_items', $params);
+        return response()->json($data);
 /***************** */
         // $params = [
         //     "itemId" => '82732',	//82711
@@ -59,10 +62,10 @@ class DashboardController extends Controller
 
 //************************** */
 
-$params = [
-    "type" => 2,	//82711
-];
-$data = WialonService::makeRequest('core/get_user_info', $params);
-return response()->json($data);
+// $params = [
+//     "type" => 2,	//82711
+// ];
+// $data = WialonService::makeRequest('core/get_user_info', $params);
+// return response()->json($data);
     }
 }

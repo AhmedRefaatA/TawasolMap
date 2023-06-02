@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Wialon\AuthController@redirectWialon')->name('login');
 
+Route::get('dashboard', 'Wialon\DashboardController@index')->name('dashboard');
 Route::middleware('auth')->group(function () {
-    Route::get('dashboard', 'Wialon\DashboardController@index')->name('dashboard');
 
     Route::get('items', 'Wialon\DashboardController@items');
 });
