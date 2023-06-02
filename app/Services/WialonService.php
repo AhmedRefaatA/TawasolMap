@@ -48,22 +48,19 @@ class WialonService
     // Make wialon request
     public static function makeRequest(string $svc, array $params, string $method = 'post'){
         try {
-            $active_session = session('wialonSid') ? true : false;
-            if(!$active_session){
-                session('wialonToken') ? static::login(session('wialonToken')) : redirect('login');
-            }else{
-                $client = new Client();
-                $url = config('wialon.base_api_url');
-                $response = $client->$method($url, [
-                    'form_params' => [
-                        'sid' => session('wialonSid'),
-                        'svc' => $svc,
-                        'params' => json_encode($params),
-                    ],
-                ]);
-                $responseData = json_decode($response->getBody(), true);
-                return $responseData ?? false;
-            }
+            // update Session id.
+            static::login(session('wialonToken'));
+            $client = new Client();
+            $url = config('wialon.base_api_url');
+            $response = $client->$method($url, [
+                'form_params' => [
+                    'sid' => session('wialonSid'),
+                    'svc' => $svc,
+                    'params' => json_encode($params),
+                ],
+            ]);
+            $responseData = json_decode($response->getBody(), true);
+            return $responseData ?? false;
             
         } catch (\Exception $e) {
             static::$error = $e->getMessage();
