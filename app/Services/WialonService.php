@@ -49,7 +49,7 @@ class WialonService
     public static function makeRequest(string $svc, array $params, string $method = 'post'){
         try {
             // update Session id.
-            static::login(session('wialonToken'));
+            //static::login(session('wialonToken'));
             $client = new Client();
             $url = config('wialon.base_api_url');
             $response = $client->$method($url, [
