@@ -14,6 +14,7 @@ App dependencies
 
 - You must add google map Api key in env from your side.
 - I provide all another env variable from my side.
+- You can generate .env file from .env.example file it is update by all env variable.
 - You must run npm run dev.
 - You must run php artisan queue:work to queueing broadcast events.
 - You must update WIALON_BASE_URL and WIALON_REDIRECT_URL in env file by new links.
