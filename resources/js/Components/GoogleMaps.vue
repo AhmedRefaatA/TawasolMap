@@ -1,43 +1,56 @@
 <template>
     <div id="map" style="height: 80vh"></div>
-  </template>
+</template>
   
   <script setup>
-import { onMounted } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { Loader } from "@googlemaps/js-api-loader";
+
+const props = defineProps({
+    modelValue: {
+      required: true,
+      type: Array
+    },
+})
+const vehicles = props.modelValue
+
+const map = ref(null);
+const markers = ref([]);
 
 onMounted(() => {
   const loader = new Loader({
     apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
-  const locations = [
-    { lat: 24.7764483, lng: 46.6397916 },
-    { lat: 24.77689, lng: 46.6396099 },
-    { lat: 24.7828083, lng: 46.63773 },
-  ];
+    loader.load().then(() => {
+    map.value = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 0, lng: 0 },
+      zoom: 12,
+    });
+    watch(vehicles, ()=>{
+      vehicles.forEach(location => {
+        const position = new google.maps.LatLng(location.pos.y, location.pos.x);
+        const marker = new google.maps.Marker({
+          map: map.value,
+          position: position,
+          icon: '/storage/map_marker.png',
+        });
+        marker.set('vehicleId', 10);
+        markers.value.push(marker);
+        map.value.setCenter(position);
+        marker.addListener('click', () => {
+          // Handle the click event here
+          console.log('Marker clicked', location);
+        });
+      });
+    });
+  }
+  
+  )
+  
 
   
 
-  loader.load().then(() => {
-    const map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 24.7764483, lng: 46.6397916 },
-      zoom: 12,
-    });
-    const customMarkerIcon = {
-      url: '/storage/map_marker.png',
-      size: new google.maps.Size(64, 64), // The size of the image file
-      origin: new google.maps.Point(0, 0), // The origin point of the image
-      anchor: new google.maps.Point(16, 32), // The anchor point to position the image
-    };
-    // Create markers for each location
-    locations.forEach(location => {
-      new google.maps.Marker({
-        position: location,
-        map: map,
-        icon: customMarkerIcon,
-      });
-    });
-  });
+  
 });
 </script>

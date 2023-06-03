@@ -28,10 +28,10 @@ class VehicleTrackingController extends Controller
             ];
             $data = WialonService::makeRequest('core/search_items', $params);
             $items = $data['items'];
-            $itemIds = collect($items)->pluck('id')->toArray();
-            cache([auth()->user()->id => $itemIds]);
+            //$itemIds = collect($items)->pluck('id')->toArray();
+            //cache([auth()->user()->id => $itemIds]);
             return Inertia::render('Vehicle/Index', [
-                'items' => $itemIds
+                'items' => $items
             ]);
         } catch (\Exception $e) {
             return redirect()->back()->with([
