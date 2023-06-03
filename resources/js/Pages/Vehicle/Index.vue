@@ -20,6 +20,7 @@ onMounted(() => {
         .listen('UpdateVehicleLocation', (e) => {
             if(e.vehicle_data.messages != undefined){
                 vehicles.value[vehicle.id] = e.vehicle_data.messages[0]
+                localStorage.setItem(vehicle.id, JSON.stringify(vehicle))
             }
         });
         setInterval(async () => {
