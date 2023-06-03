@@ -14,12 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'Wialon\AuthController@redirectWialon')->name('login');
-
 Route::get('dashboard', 'Wialon\DashboardController@index')->name('dashboard');
-
 Route::get('tracking/{id}', 'Wialon\VehicleTrackingController@tracking');
 Route::middleware('auth')->group(function () {
-
+    Route::get('logout', 'Wialon\AuthController@logout')->name('login');
     Route::get('items', 'Wialon\DashboardController@items');
-    Route::get('tracking', 'Wialon\VehicleTrackingController@index');
+    Route::get('tracking', 'Wialon\VehicleTrackingController@index')->name('tracking');
 });

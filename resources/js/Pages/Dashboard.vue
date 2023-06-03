@@ -1,6 +1,6 @@
 <template>
     <MainLayout>
-        <h1 class="bg-blue-400 text-3xl font-bold underline">Test Dashboard Page</h1>
+        <h1 class="text-center text-3xl font-bold underline">Test Dashboard Page click tracking button to display tracking status</h1>
         <!-- <GoogleMaps></GoogleMaps> -->
     </MainLayout>
     

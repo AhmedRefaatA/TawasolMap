@@ -16,4 +16,17 @@ class AuthController extends Controller
             config('app.name')
         );
     }
+
+    public function logout(Request $request){
+        try {
+            auth()->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect('/');
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'error' => $e->getMessage()
+            ]); 
+        }
+    }
 }

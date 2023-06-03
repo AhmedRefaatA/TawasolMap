@@ -1,13 +1,14 @@
 <template>
+<!-- Map Section -->
     <div id="map" style="height: 80vh"></div>
+<!-- Information Modal -->
     <Modal :show="showVehicle" @close="closeModal">
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ vehicleNm }}
             </h2>
-
             <p class="mt-1 text-sm text-gray-600">
-              Timestamp : {{ selectedVehicle.t }}
+              Last Message Timestamp : {{ selectedVehicle.t }}
             </p>
             <p class="mt-1 text-sm text-gray-600">
               speed : {{ selectedVehicle.pos.s }}
@@ -26,24 +27,28 @@
             </div>
         </div>
     </Modal>
+<!-- End Information Modal -->
 </template>
   
-  <script setup>
+<script setup>
 import { onMounted, watch, ref } from 'vue';
 import { Loader } from "@googlemaps/js-api-loader";
 import Modal from '@/Components/Modal.vue';
 
+// Define props.
 const props = defineProps({
     modelValue: {
       required: true,
       type: Array
     },
 })
-
+// Toggle modal displaying
 const showVehicle = ref(false)
-const vehicles = props.modelValue
+// Define information values
 const vehicleNm = ref('')
 const selectedVehicle = ref()
+const vehicles = props.modelValue
+// Map Variable
 const map = ref(null);
 const markers = ref([]);
 
@@ -53,35 +58,36 @@ onMounted(() => {
   });
 
     loader.load().then(() => {
-    map.value = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 0, lng: 0 },
-      zoom: 12,
-    });
-    watch(vehicles, ()=>{
-      vehicles.forEach((location, vehicleId) => {
-        const position = new google.maps.LatLng(location.pos.y, location.pos.x);
-        const marker = new google.maps.Marker({
-          map: map.value,
-          position: position,
-          icon: '/storage/map_marker.png',
-          label: JSON.parse(localStorage.getItem(vehicleId)).nm
-        });
-        markers.value.push(marker);
-        map.value.setCenter(position);
-        marker.addListener('click', () => {
-          vehicleNm.value = JSON.parse(localStorage.getItem(vehicleId)).nm
-          selectedVehicle.value = location
-          showVehicle.value = true
+      // Init Map
+      map.value = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 0, lng: 0 },
+        zoom: 12,
+      });
+      // Watch Vehicles updates
+      watch(vehicles, ()=>{
+        vehicles.forEach((location, vehicleId) => {
+          const position = new google.maps.LatLng(location.pos.y, location.pos.x);
+          // Add marker
+          const marker = new google.maps.Marker({
+            map: map.value,
+            position: position,
+            icon: '/storage/map_marker.png',
+            label: JSON.parse(localStorage.getItem(vehicleId)).nm
+          });
+          markers.value.push(marker);
+          // Update center point.
+          map.value.setCenter(position);
+          // Add click listener for markers to display information modal.
+          marker.addListener('click', () => {
+            vehicleNm.value = JSON.parse(localStorage.getItem(vehicleId)).nm
+            selectedVehicle.value = location
+            showVehicle.value = true
+          });
         });
       });
-    });
-  }
-  
-  )
-  
-  
+  })
 });
-
+// Close modal method.
 const closeModal = () => {
     showVehicle.value = false;
 };
