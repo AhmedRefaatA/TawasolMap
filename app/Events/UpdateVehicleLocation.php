@@ -43,7 +43,7 @@ class UpdateVehicleLocation implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('vehicle-'. $this->vehicle_id),
+            new Channel('vehicle-' . $this->vehicle_id),
         ];
     }
 }
